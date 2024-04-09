@@ -1,0 +1,26 @@
+variables:
+  REGISTRY: 968557029040.dkr.ecr.ap-southeast-1.amazonaws.com/dcarbon-stag
+
+stages:
+  - build
+
+build:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - export ts=`date +%s`
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --destination "${REGISTRY}:${CI_PROJECT_NAME}-${CI_COMMIT_BRANCH}-${CI_COMMIT_SHORT_SHA}-$ts"
+      --destination "${REGISTRY}:${CI_PROJECT_NAME}-${CI_COMMIT_BRANCH}-latest"
+      --cache=true  
+      --compressed-caching=false
+  tags:
+    - build
+    - k8s
+  only:
+    refs:
+      - stag

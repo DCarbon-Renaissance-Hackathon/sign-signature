@@ -1,0 +1,8 @@
+services:
+  milady-sign-api:
+    container_name: milady-sign-api
+    image: adminesollab/dev-repository:milady-sign-api-latest
+    # image: f2d90459c747
+    ports:
+      - "3000:3000"
+    restart: always
